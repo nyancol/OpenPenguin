@@ -43,9 +43,9 @@ neutron()
     openstack role add --project services --user neutron admin
     openstack service create --name neutron --description "OpenStack Networking" network
 
-    openstack enspoint create --region RegionOne network public http://controller:9696
-    openstack enspoint create --region RegionOne network internal http://controller:9696
-    openstack enspoint create --region RegionOne network admin http://controller:9696
+    openstack endpoint create --region RegionOne network public http://controller:9696
+    openstack endpoint create --region RegionOne network internal http://controller:9696
+    openstack endpoint create --region RegionOne network admin http://controller:9696
 
     neutron net-create --router:external --provider:network_type vlan --provider:physical_network extnet --provider:segmentation_id 2232 public
     neutron subnet-create --name public-subnet --enable_dhcp=False --allocation-pool=start=10.11.54.70,end=10.11.54.89 --gateway=10.11.54.1 public 10.11.54.1/24
