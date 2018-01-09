@@ -1,0 +1,61 @@
+heat_template_version: 2015-04-30
+
+description: Simple template to deploy a single compute instance
+
+resources:
+
+  internal_net:
+    type: OS::Neutron::Net
+
+  internal_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: internal_net }
+      cidr: "10.8.1.0/24"
+      dns_nameservers: [ "8.8.8.8", "8.8.4.4" ]
+      ip_version: 4
+
+  internal_router:
+    type: OS::Neutron::Router
+    properties:
+      external_gateway_info: { network: public }
+
+  internal_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: internal_router }
+      subnet: { get_resource: internal_subnet }
+
+
+  instance_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: internal_net }
+      fixed_ips:
+        - subnet_id: { get_resource: internal_subnet }
+
+  floating_ip:
+    type: OS::Nova::FloatingIP
+    properties:
+      pool: public
+
+  my_instance:
+    type: OS::Nova::Server
+    properties:
+      image: Ubuntu 17.04
+      flavor: v1.m1.d5
+      networks:
+        - port: { get_resource: instance_port }
+      key_name: penguinkey
+
+  association:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: my_instance }
+
+
+outputs:
+  instance_ip:
+    description: The IP address of the deployed instance
+    value: { get_attr: [my_instance, first_address] }
