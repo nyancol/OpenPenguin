@@ -1,0 +1,95 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 14 (0xe)
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=FR, ST=RA, L=Grenoble, O=OSSI Lab, OU=HP Solution Innovation Center, CN=OSSI Lab CA/name=EasyRSA/emailAddress=pingouin@hp.com
+        Validity
+            Not Before: Nov 28 10:56:02 2017 GMT
+            Not After : Nov 23 10:56:02 2037 GMT
+        Subject: C=FR, ST=RA, L=Grenoble, O=OSSI Lab, OU=HPE CIC, CN=lab2017/name=EasyRSA/emailAddress=pingouin@hp.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:c0:a6:83:f8:01:82:00:3f:28:f5:d9:a4:12:27:
+                    51:8b:8d:52:91:4d:90:eb:bc:94:79:bc:14:71:1d:
+                    02:1f:31:89:47:11:27:24:47:1a:ba:c2:84:98:11:
+                    81:51:eb:ee:36:b1:09:e6:7b:12:ca:1f:c5:36:16:
+                    27:3d:6c:4d:a2:92:46:ff:8a:2d:ff:a2:bc:69:17:
+                    14:59:43:e0:82:53:6d:80:ca:ad:18:23:eb:c4:62:
+                    6a:89:07:47:bc:f7:d4:c4:ec:9f:c0:46:a2:e1:48:
+                    4e:e9:b6:93:3e:e0:66:94:b5:dd:38:40:f8:1c:77:
+                    88:58:44:95:a9:a0:31:f3:68:5d:02:9f:e5:3f:ab:
+                    37:fd:e8:bf:87:3b:a7:7d:6b:62:e3:02:b7:af:82:
+                    1b:a3:14:47:62:68:7a:07:01:f8:2f:f4:1a:83:90:
+                    15:d3:34:11:1f:9f:81:00:a7:6e:c0:fe:61:55:69:
+                    af:84:e5:7d:11:da:b1:d9:f0:66:db:53:4e:71:33:
+                    ed:88:48:e6:a6:25:f4:a3:c1:14:dc:b3:77:df:7a:
+                    42:3f:96:a3:61:6d:fe:f3:97:32:81:19:f9:bd:49:
+                    00:ee:5a:2a:f3:ad:d2:bb:76:c9:37:a3:92:ba:26:
+                    c0:94:7c:8d:65:c8:e3:31:49:f0:0d:ff:08:c8:b9:
+                    f2:b1
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                42:11:A0:E2:7C:31:EE:49:5E:BB:B9:16:CB:1D:6A:53:2C:3B:EF:2F
+            X509v3 Authority Key Identifier: 
+                keyid:E6:19:D2:0F:27:9D:B2:96:10:EB:C6:1A:14:00:6D:CF:D8:2C:70:9D
+                DirName:/C=FR/ST=RA/L=Grenoble/O=OSSI Lab/OU=HP Solution Innovation Center/CN=OSSI Lab CA/name=EasyRSA/emailAddress=pingouin@hp.com
+                serial:BF:41:0C:A8:35:80:AB:E4
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha256WithRSAEncryption
+         c3:1b:af:27:43:40:97:d7:f0:1a:b4:89:81:10:90:72:8c:1b:
+         5d:96:67:a0:89:f0:d0:1f:bf:df:cb:47:34:69:ec:40:44:24:
+         7a:67:34:51:f6:d7:1f:e0:ff:25:07:2e:6d:6f:59:5a:54:44:
+         db:36:00:af:0b:cd:34:2c:83:16:44:12:76:c0:08:8d:9a:eb:
+         a8:eb:4c:f6:be:58:c7:56:ad:2c:32:b2:4c:cf:92:d0:e8:8e:
+         95:ff:9f:01:5f:5e:02:89:8d:f5:5e:0f:af:17:a2:d5:1c:bd:
+         a1:67:4e:64:de:9a:4a:c4:d8:1b:69:03:cc:8f:c6:be:9b:37:
+         71:30:00:be:65:99:45:f3:48:49:80:04:57:b1:2d:84:11:39:
+         7b:75:9f:74:e6:ca:21:63:bd:80:09:c9:c6:b4:ce:05:2a:5e:
+         5e:8b:a7:e8:55:2e:54:53:21:2d:e1:1a:3f:d2:b6:8a:c9:5c:
+         ed:5d:a3:d1:44:a8:76:4b:eb:07:29:86:fd:73:0f:60:aa:d1:
+         96:8f:3f:c8:48:d8:34:aa:ac:4d:b7:fd:cb:a0:84:66:09:4a:
+         07:5d:d4:57:c2:96:6b:a3:a9:32:58:f1:1d:8f:88:37:bb:bc:
+         11:d9:73:53:cc:76:c6:e9:41:3b:92:18:f8:d5:ac:95:b0:26:
+         59:9f:f4:c8
+-----BEGIN CERTIFICATE-----
+MIIFLDCCBBSgAwIBAgIBDjANBgkqhkiG9w0BAQsFADCBsDELMAkGA1UEBhMCRlIx
+CzAJBgNVBAgTAlJBMREwDwYDVQQHEwhHcmVub2JsZTERMA8GA1UEChMIT1NTSSBM
+YWIxJjAkBgNVBAsTHUhQIFNvbHV0aW9uIElubm92YXRpb24gQ2VudGVyMRQwEgYD
+VQQDEwtPU1NJIExhYiBDQTEQMA4GA1UEKRMHRWFzeVJTQTEeMBwGCSqGSIb3DQEJ
+ARYPcGluZ291aW5AaHAuY29tMB4XDTE3MTEyODEwNTYwMloXDTM3MTEyMzEwNTYw
+MlowgZYxCzAJBgNVBAYTAkZSMQswCQYDVQQIEwJSQTERMA8GA1UEBxMIR3Jlbm9i
+bGUxETAPBgNVBAoTCE9TU0kgTGFiMRAwDgYDVQQLEwdIUEUgQ0lDMRAwDgYDVQQD
+EwdsYWIyMDE3MRAwDgYDVQQpEwdFYXN5UlNBMR4wHAYJKoZIhvcNAQkBFg9waW5n
+b3VpbkBocC5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDApoP4
+AYIAPyj12aQSJ1GLjVKRTZDrvJR5vBRxHQIfMYlHESckRxq6woSYEYFR6+42sQnm
+exLKH8U2Fic9bE2ikkb/ii3/orxpFxRZQ+CCU22Ayq0YI+vEYmqJB0e899TE7J/A
+RqLhSE7ptpM+4GaUtd04QPgcd4hYRJWpoDHzaF0Cn+U/qzf96L+HO6d9a2LjArev
+ghujFEdiaHoHAfgv9BqDkBXTNBEfn4EAp27A/mFVaa+E5X0R2rHZ8GbbU05xM+2I
+SOamJfSjwRTcs3ffekI/lqNhbf7zlzKBGfm9SQDuWirzrdK7dsk3o5K6JsCUfI1l
+yOMxSfAN/wjIufKxAgMBAAGjggFnMIIBYzAJBgNVHRMEAjAAMC0GCWCGSAGG+EIB
+DQQgFh5FYXN5LVJTQSBHZW5lcmF0ZWQgQ2VydGlmaWNhdGUwHQYDVR0OBBYEFEIR
+oOJ8Me5JXru5FssdalMsO+8vMIHlBgNVHSMEgd0wgdqAFOYZ0g8nnbKWEOvGGhQA
+bc/YLHCdoYG2pIGzMIGwMQswCQYDVQQGEwJGUjELMAkGA1UECBMCUkExETAPBgNV
+BAcTCEdyZW5vYmxlMREwDwYDVQQKEwhPU1NJIExhYjEmMCQGA1UECxMdSFAgU29s
+dXRpb24gSW5ub3ZhdGlvbiBDZW50ZXIxFDASBgNVBAMTC09TU0kgTGFiIENBMRAw
+DgYDVQQpEwdFYXN5UlNBMR4wHAYJKoZIhvcNAQkBFg9waW5nb3VpbkBocC5jb22C
+CQC/QQyoNYCr5DATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ
+KoZIhvcNAQELBQADggEBAMMbrydDQJfX8Bq0iYEQkHKMG12WZ6CJ8NAfv9/LRzRp
+7EBEJHpnNFH21x/g/yUHLm1vWVpURNs2AK8LzTQsgxZEEnbACI2a66jrTPa+WMdW
+rSwyskzPktDojpX/nwFfXgKJjfVeD68XotUcvaFnTmTemkrE2BtpA8yPxr6bN3Ew
+AL5lmUXzSEmABFexLYQROXt1n3TmyiFjvYAJyca0zgUqXl6Lp+hVLlRTIS3hGj/S
+torJXO1do9FEqHZL6wcphv1zD2Cq0ZaPP8hI2DSqrE23/cughGYJSgdd1FfClmuj
+qTJY8R2PiDe7vBHZc1PMdsbpQTuSGPjVrJWwJlmf9Mg=
+-----END CERTIFICATE-----
