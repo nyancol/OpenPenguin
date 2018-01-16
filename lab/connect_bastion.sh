@@ -1,1 +1,1 @@
-ssh -i penguinkey.pem ubuntu@10.11.53.38
+ssh -i penguinkey.pem -o strictHostKeyChecking=no ubuntu@10.11.53.38
