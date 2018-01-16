@@ -1,0 +1,133 @@
+heat_template_version: 2015-04-30
+
+description: Simple template to deploy a single compute instance
+
+resources:
+
+#Net
+  private_net:
+    type: OS::Neutron::Net
+
+#Subnet
+  private_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: private_net }
+      cidr: "10.9.8.0/24"
+      dns_nameservers: [ "8.8.8.8", "8.8.4.4" ]
+      ip_version: 4
+
+#Router
+  private_router:
+    type: OS::Neutron::Router
+    properties:
+      external_gateway_info: { network: public }
+  private_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: private_router }
+      subnet: { get_resource: private_subnet }
+
+#Ports
+  host1_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: private_net }
+      fixed_ips:
+        - subnet_id: { get_resource: private_subnet }
+  host2_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: private_net }
+      fixed_ips:
+        - subnet_id: { get_resource: private_subnet }
+  host3_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: private_net }
+      fixed_ips:
+        - subnet_id: { get_resource: private_subnet }
+#  host4_port:
+#    type: OS::Neutron::Port
+#    properties:
+#      network: { get_resource: private_net }
+#      fixed_ips:
+#        - subnet_id: { get_resource: private_subnet }
+
+#Floating IPs
+  host1_floating_ip:
+    type: OS::Nova::FloatingIP
+    properties:
+      pool: public
+  host2_floating_ip:
+    type: OS::Nova::FloatingIP
+    properties:
+      pool: public
+  host3_floating_ip:
+    type: OS::Nova::FloatingIP
+    properties:
+      pool: public
+#  host4_floating_ip:
+#    type: OS::Nova::FloatingIP
+#    properties:
+#      pool: public
+
+#Instances
+  host1:
+    type: OS::Nova::Server
+    properties:
+      image: Ubuntu 17.04
+      flavor: v2.m2.d5
+      networks:
+        - port: { get_resource: host1_port }
+      key_name: penguinkey
+  host2:
+    type: OS::Nova::Server
+    properties:
+      image: Ubuntu 17.04
+      flavor: v2.m2.d5
+      networks:
+        - port: { get_resource: host2_port }
+      key_name: penguinkey
+  host3:
+    type: OS::Nova::Server
+    properties:
+      image: Ubuntu 17.04
+      flavor: v2.m2.d5
+      networks:
+        - port: { get_resource: host3_port }
+      key_name: penguinkey
+#  host4:
+#    type: OS::Nova::Server
+#    properties:
+#      image: Ubuntu 17.04
+#      flavor: v2.m2.d5
+#      networks:
+#        - port: { get_resource: host4_port }
+#      key_name: penguinkey
+
+  host1_association:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: host1_floating_ip }
+      server_id: { get_resource: host1 }
+  host2_association:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: host2_floating_ip }
+      server_id: { get_resource: host2 }
+  host3_association:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: host3_floating_ip }
+      server_id: { get_resource: host3 }
+#  host4_association:
+#    type: OS::Nova::FloatingIPAssociation
+#    properties:
+#      floating_ip: { get_resource: host4_floating_ip }
+#      server_id: { get_resource: host1 }
+
+#outputs:
+#  instance_ip:
+#    description: The IP address of the deployed instance
+#    value: { get_attr: [my_instance, first_address] }
