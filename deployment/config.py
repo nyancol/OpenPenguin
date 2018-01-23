@@ -19,7 +19,7 @@ def start_packstack(ip):
         s.sendline('sudo yum install -y openstack-packstack')
 
         print("\nConfiguring Packstack...\n")
-        s.sendline('sudo packstack --gen-answer-file=ensimag-packstack.txt CONFIG_NTP_SERVERS=10.3.252.26 CONFIG_NEUTRON_ML2_TYPE_DRIVERS=vxlan,flat,vlan CONFIG_NEUTRON_ML2_FLAT_NETWORKS=extnet CONFIG_NEUTRON_ML2_VLAN_RANGES=extnet:2232:2232 CONFIG_NEUTRON_OVS_BRIDGE_IFACES=br-ex:eno1 CONFIG_NEUTRON_OVS_BRIDGEs_COMPUTE=br-ex CONFIG_PROVISION_DEMO=n')
+        s.sendline('sudo packstack --gen-answer-file=ensimag-packstack.txt CONFIG_NTP_SERVERS=10.3.252.26 CONFIG_NEUTRON_ML2_TYPE_DRIVERS=vxlan,flat,vlan CONFIG_NEUTRON_ML2_FLAT_NETWORKS=extnet CONFIG_NEUTRON_ML2_VLAN_RANGES=extnet:2232:2232 CONFIG_NEUTRON_OVS_BRIDGE_IFACES=br-ex:eno1 CONFIG_NEUTRON_OVS_BRIDGEs_COMPUTE=br-ex CONFIG_PROVISION_DEMO=n CONFIG_CONTROLLER_HOST=10.11.51.145 CONFIG_COMPUTE_HOSTS=10.11.51.144 CONFIG_NETWORK_HOSTS=10.11.51.145')
         s.sendline('sudo packstack --answer-file=ensimag-packstack.txt')
         s.sendline('source keystonerc_admin')
     except pxssh.ExceptionPxssh, e:
@@ -33,7 +33,6 @@ if __name__ == "__main__":
     print("Setting-Up Packstack")
     print("#####################\n")
     processes.append(start_packstack("10.11.51.144"))
-    processes.append(start_packstack("10.11.51.145"))
     for p in processes:
         p.wait()
     print("Done")
