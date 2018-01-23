@@ -28,14 +28,56 @@ resources:
       router_id: { get_resource: private_router }
       subnet: { get_resource: private_subnet }
 
+#Security group
+  test_security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - protocol: tcp
+          remote_ip_prefix: 10.10.10.0/24
+        - protocol: icmp
+          remote_ip_prefix: 0.0.0.0/0
+        - protocol: tcp
+          remote_ip_prefix: 0.0.0.0/0
+          port_range_min: 22
+          port_range_max: 22
+        - protocol: tcp
+          remote_ip_prefix: 0.0.0.0/0
+          port_range_min: 80
+          port_range_max: 80
+
+#Key
+  my_key:
+    type: OS::Nova::KeyPair
+    properties:
+      save_private_key: true
+      name: test_key
+
+#Instances
+  host1:
+    type: OS::Nova::Server
+    properties:
+      image: Ubuntu 16.04 "Xenial Xerus"
+      flavor: v2.m2.d5
+      networks:
+        - port: { get_resource: host1_port }
+      key_name: { get_resource: my_key }
+      # user_data: |
+      #   #!/bin/bash
+      #   sudo apt-get update
+      #   sudo apt-get install -y python
+
 #Ports
   host1_port:
     type: OS::Neutron::Port
     properties:
       network: { get_resource: private_net }
+      security_groups:
+        - { get_resource: test_security_group }
       fixed_ips:
         - ip_address: 10.10.10.11
-  #Floating IPs
+
+#Floating IPs
   host1_floating_ip:
     type: OS::Nova::FloatingIP
     properties:
@@ -46,24 +88,3 @@ resources:
     properties:
       floating_ip: { get_resource: host1_floating_ip }
       server_id: { get_resource: host1 }
-
-  host1:
-    type: OS::Nova::Server
-    properties:
-      image: Ubuntu 16.04 "Xenial Xerus"
-      flavor: v2.m2.d5
-      networks:
-        - port: { get_resource: host1_port }
-      key_name: penguinkey
-      user_data: |
-        #!/bin/bash
-        sudo apt-get update
-        sudo apt-get install -y python
-
-  install_agents:
-    type: "OS::Heat::SoftwareConfig"
-    properties:
-      group: ungrouped
-      config: |
-        #!/bin/bash
-        apt-get install htop
