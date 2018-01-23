@@ -1,0 +1,155 @@
+heat_template_version: 2015-04-30
+
+description: Main template for the application. Deploys a net, subnet, router, floating_IPs, ports and instances.
+
+resources:
+
+#Net
+  private_net:
+    type: OS::Neutron::Net
+
+#Subnet
+  private_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: private_net }
+      cidr: "10.10.10.0/24"
+      dns_nameservers: [ "8.8.8.8", "8.8.4.4" ]
+      ip_version: 4
+
+#Router
+  private_router:
+    type: OS::Neutron::Router
+    properties:
+      external_gateway_info: { network: public }
+  private_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: private_router }
+      subnet: { get_resource: private_subnet }
+
+#Security group
+  main_security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - protocol: tcp
+          remote_ip_prefix: 10.10.10.0/24
+        - protocol: icmp
+          remote_ip_prefix: 0.0.0.0/0
+        - protocol: tcp
+          remote_ip_prefix: 0.0.0.0/0
+          port_range_min: 22
+          port_range_max: 22
+        - protocol: tcp
+          remote_ip_prefix: 0.0.0.0/0
+          port_range_min: 80
+          port_range_max: 80
+
+
+#Ports
+  host1_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: private_net }
+      security_groups:
+        - { get_resource: main_security_group }
+      fixed_ips:
+        - ip_address: 10.10.10.11
+
+  host2_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: private_net }
+      security_groups:
+        - { get_resource: main_security_group }
+      fixed_ips:
+        - ip_address: 10.10.10.12
+
+  # host3_port:
+  #   type: OS::Neutron::Port
+  #   properties:
+  #     network: { get_resource: private_net }
+  #     security_groups:
+  #       - { get_resource: main_security_group }
+  #     fixed_ips:
+  #       - ip_address: 10.10.10.13
+
+
+#Floating IPs
+  host1_floating_ip:
+    type: OS::Nova::FloatingIP
+    properties:
+      pool: public
+  host2_floating_ip:
+    type: OS::Nova::FloatingIP
+    properties:
+      pool: public
+  # host3_floating_ip:
+  #   type: OS::Nova::FloatingIP
+  #   properties:
+  #     pool: public
+
+#Instances
+  host1:
+    type: OS::Nova::Server
+    properties:
+      image: Ubuntu 16.04 "Xenial Xerus"
+      flavor: v2.m2.d5
+      networks:
+        - port: { get_resource: host1_port }
+      key_name: penguinkey
+      user_data: |
+        #!/bin/bash
+        sudo apt-get update
+        sudo apt-get install -y python
+
+  host2:
+    type: OS::Nova::Server
+    properties:
+      image: Ubuntu 16.04 "Xenial Xerus"
+      flavor: v2.m2.d5
+      networks:
+        - port: { get_resource: host2_port }
+      key_name: penguinkey
+      user_data: |
+        #!/bin/bash
+        sudo apt-get update
+        sudo apt-get install -y python
+
+  # host3:
+  #   type: OS::Nova::Server
+  #   properties:
+  #     image: Ubuntu 16.04 "Xenial Xerus"
+  #     flavor: v2.m2.d5
+  #     networks:
+  #       - port: { get_resource: host3_port }
+  #     key_name: penguinkey
+  #     user_data: |
+  #       #!/bin/bash
+  #       sudo apt-get update
+  #       sudo apt-get install -y python
+
+#Floating IP association
+  host1_association:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: host1_floating_ip }
+      server_id: { get_resource: host1 }
+  host2_association:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: host2_floating_ip }
+      server_id: { get_resource: host2 }
+
+  # host3_association:
+  #   type: OS::Nova::FloatingIPAssociation
+  #   properties:
+  #     floating_ip: { get_resource: host3_floating_ip }
+  #     server_id: { get_resource: host3 }
+
+
+#outputs:
+#  instance_ip:
+#    description: The IP address of the deployed instance
+#    value: { get_attr: [my_instance, first_address] }
