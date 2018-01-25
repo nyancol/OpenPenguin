@@ -1,0 +1,5 @@
+- name: "Deploiement de l'application sur un noeud"
+  hosts: "{{ host }}" #lancer avec --extra-vars "host=@"
+  tasks:
+    - docker-service:
+      project_src: cloud_native_app
