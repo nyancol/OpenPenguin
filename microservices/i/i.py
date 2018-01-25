@@ -17,7 +17,7 @@ import config
 
 # Initialise Flask
 app = Flask(__name__)
-app.debug = True
+app.debug = False
 
 # Affect app logger to a global variable so logger can be used elsewhere.
 config.logger = app.logger
@@ -115,7 +115,7 @@ def add_headers(response):
                          'Content-Type,Authorization')
 
 
-if __name__ == "__main__":
+def start_service():
     # Vars
     app_logfile = "i.log"
 
@@ -136,3 +136,7 @@ if __name__ == "__main__":
 
     config.logger.info("Starting %s", config.i.NAME)
     app.run(port=int(config.i.conf_file.get_i_port()), host="0.0.0.0")
+
+
+if __name__ == "__main__":
+    start_service()

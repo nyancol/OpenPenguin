@@ -22,7 +22,7 @@ import config
 
 # Initialise Flask
 app = Flask(__name__)
-app.debug = True
+app.debug = False
 
 # Affect app logger to a global variable so logger can be used elsewhere.
 config.logger = app.logger
@@ -114,6 +114,7 @@ def api_root():
 def shutdown_server():
     """shutdown server"""
     func = request.environ.get("werkzeug.server.shutdown")
+    print(func)
     if func is None:
         raise RuntimeError("Not running with the Werkzeug Server")
     func()
@@ -140,7 +141,7 @@ def add_headers(response):
                          'Content-Type,Authorization')
 
 
-if __name__ == "__main__":
+def start_service():
     # Vars
     app_logfile = "b.log"
 
@@ -161,3 +162,6 @@ if __name__ == "__main__":
 
     config.logger.info("Starting %s", config.b.NAME)
     app.run(port=int(config.b.conf_file.get_b_port()), processes=4, host='0.0.0.0')
+
+if __name__ == "__main__":
+    start_service()

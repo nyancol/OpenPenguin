@@ -1,164 +1,71 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://0.0.0.0:8082/
+# curl -X POST http://0.0.0.0:8082/shutdown
+
+
 import unittest
-
-import logging
-from logging.handlers import RotatingFileHandler
-import pprint
-import os
 import sys
+import threading
+import time
+import socket
 import json
-from flask import Flask
-from flask import jsonify
-from flask import request
 import requests
-import pika
-import config
 
-# Initialise Flask
-app = Flask(__name__)
-app.debug = True
+sys.path.append('/user/7/.base/cabrerap/home/Downloads/OpenPenguin/microservices/b')
+import b
 
-# Affect app logger to a global variable so logger can be used elsewhere.
-config.logger = app.logger
-
-@app.route("/user/<id>")
-def api_play(id):
-    """Retrieve data for user <id>"""
-    config.logger.info("*** Start processing id %s ***", id)
-
-    # Call service w
-    w = requests.get(config.b.conf_file.get_b_wurl() + id)
-    config.logger.debug(w)
-    config.logger.debug(w.json())
-
-    data = w.json()
-    config.logger.debug(data["price"])
-
-    # Send message to workers.
-    if config.b.conf_file.get_b_rabbithost() == 'localhost':
-        connection = pika.BlockingConnection(
-            pika.ConnectionParameters(
-                host=config.b.conf_file.get_b_rabbithost()))
-    else:
-        credentials = pika.PlainCredentials(
-            config.b.conf_file.get_b_rabbitlogin(),
-            config.b.conf_file.get_b_rabbitpassword())
-        connection = pika.BlockingConnection(
-            pika.ConnectionParameters(
-                credentials=credentials,
-                host=config.b.conf_file.get_b_rabbithost()))
-
-    channel = connection.channel()
-
-    channel.exchange_declare(exchange='serviceb',
-                             exchange_type='direct')
-
-    channel.queue_declare(queue='redis')
-    channel.queue_declare(queue='mailgun')
-
-    channel.queue_bind(exchange='serviceb',
-                       queue='redis', routing_key='serviceb.msg')
-    channel.queue_bind(exchange='serviceb',
-                       queue='mailgun', routing_key='serviceb.msg')
-
-    message = json.dumps({"id": id,
-                          "price": data["price"],
-                          "img": data["img"]})
-    channel.basic_publish(exchange='serviceb',
-                          routing_key='serviceb.msg',
-                          body=message)
-    config.logger.debug(" [x] Sent %r" % message)
-    connection.close()
-
-    # Send back answer
-    data = {"status": "ok"}
-    resp = jsonify(data)
-    resp.status_code = 200
-    config.logger.info("*** End processing id %s ***", id)
-    add_headers(resp)
-    return resp
+def print_header(text):
+    print("\n####################")
+    print(text)
+    print("####################\n")
 
 
-@app.route("/shutdown", methods=["POST"])
-def shutdown():
-    """Shutdown server"""
-    shutdown_server()
-    config.logger.info("Stopping %s...", config.b.NAME)
-    return "Server shutting down..."
+class ThreadingB(object):
+
+    def __init__(self, interval=1):
+        self.interval = interval
+        thread = threading.Thread(target = self.run, args = ())
+        thread.daemon = True
+        thread.start()
+
+    def run(self):
+        b.start_service()
+
+class ThreadingP(object):
+
+    def __init__(self, interval=1):
+        self.interval = interval
+        thread = threading.Thread(target = self.run, args = ())
+        thread.daemon = True
+        thread.start()
+
+    def run(self):
+        p.start_service()
 
 
-@app.route("/", methods=["GET"])
-def api_root():
-    """Root url, provide service name and version"""
-    data = {
-        "Service": config.b.NAME,
-        "Version": config.b.VERSION
-    }
-
-    resp = jsonify(data)
-    resp.status_code = 200
-
-    resp.headers["AuthorSite"] = "https://github.com/uggla/openstack_lab"
-
-    add_headers(resp)
-    return resp
-
-
-def shutdown_server():
-    """shutdown server"""
-    func = request.environ.get("werkzeug.server.shutdown")
-    if func is None:
-        raise RuntimeError("Not running with the Werkzeug Server")
-    func()
-
-
-def configure_logger(logger, logfile):
-    """Configure logger"""
-    formatter = logging.Formatter(
-        "%(asctime)s :: %(levelname)s :: %(message)s")
-    file_handler = RotatingFileHandler(logfile, "a", 1000000, 1)
-
-    # Add logger to file
-    if (config.b.conf_file.get_b_debug().title() == 'True'):
-        logger.setLevel(logging.DEBUG)
-    else:
-        logger.setLevel(logging.INFO)
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-
-
-def add_headers(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers',
-                         'Content-Type,Authorization')
-
-
-class TestBMethods(unittest.TestCase):
+class TestServices(unittest.TestCase):
 	
-    def test_api_root(self):
-        res = api_root()
-        print(res)
+    def test_b(self):
+        print_header("Testing b...")
+        # Starting the service
+        test = ThreadingB()
+        time.sleep(2)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        print("Testing if service is deployed ... ")
+        self.assertTrue(sock.connect_ex(('0.0.0.0', 8082)) == 0)
+        sock.close()
+        print("Testing b.api_root() ...")
+        resp = requests.get(url='http://0.0.0.0:8082/')
+        data = json.loads(resp.text)
+        self.assertTrue(data["Service"] == "Microservice b")
+        # Testing b.shutdown
+        time.sleep(2)
 
 
 if __name__ == '__main__':
-    # Vars
-    app_logfile = "b.log"
-
-    # Change diretory to script one
-    try:
-        os.chdir(os.path.dirname(sys.argv[0]))
-    except OSError:
-            pass
-
-    # Define a PrettyPrinter for debugging.
-    pp = pprint.PrettyPrinter(indent=4)
-
-    # Initialise apps
-    config.initialise_b()
-
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestBMethods)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestServices)
     unittest.TextTestRunner(verbosity=2).run(suite)
 
 

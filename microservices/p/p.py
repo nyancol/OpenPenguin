@@ -137,7 +137,7 @@ def add_headers(response):
                          'Content-Type,Authorization')
 
 
-if __name__ == "__main__":
+def start_service():
     # Vars
     app_logfile = "p.log"
 
@@ -158,3 +158,6 @@ if __name__ == "__main__":
 
     config.logger.info("Starting %s", config.p.NAME)
     app.run(port=int(config.p.conf_file.get_p_port()), host='0.0.0.0')
+
+if __name__ == "__main__":
+    start_service()
