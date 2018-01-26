@@ -12,6 +12,7 @@ import time
 import socket
 import json
 import requests
+import os
 
 sys.path.append('/user/7/.base/cabrerap/home/Downloads/OpenPenguin/microservices/b')
 sys.path.append('/user/7/.base/cabrerap/home/Downloads/OpenPenguin/microservices/i')
@@ -30,9 +31,15 @@ import w
 # import w2
 
 def print_header(text):
-    print("\n####################")
-    print(text)
+    print("\n\n####################")
+    print("\033[95m" + text + "\033[0m")
     print("####################\n")
+
+def print_res(test):
+    if test:
+        print("\033[92m\t[PASSED]\033[0m")
+    else:
+        print("\033[91m\t[FAILED]\033[0m")
 
 
 class ThreadingB(object):
@@ -84,78 +91,101 @@ class TestServices(unittest.TestCase):
     def test_b(self):
         print_header("Testing b...")
         # Starting the service
-        test = ThreadingB()
+        run = ThreadingB()
         time.sleep(2)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("Testing if service is deployed ... ")
-        self.assertTrue(sock.connect_ex(('0.0.0.0', 8082)) == 0)
+        test = bool(sock.connect_ex(('0.0.0.0', 8082)) == 0)
         sock.close()
+        self.assertTrue(test, msg=test)
+        print_res(test)
         print("Testing b.api_root() ...")
         resp = requests.get(url='http://0.0.0.0:8082/')
         data = json.loads(resp.text)
-        self.assertTrue(data["Service"] == "Microservice b")
+        test = bool(data["Service"] == "Microservice b")
+        self.assertTrue(test, msg=test)
+        print_res(test)
         print("Testing server shutdown...")
         resp = requests.post(url='http://0.0.0.0:8082/shutdown')
-        self.assertTrue(resp.text == "Server shutting down...")
+        test = bool(resp.text == "Server shutting down...")
+        self.assertTrue(test, msg=test)
+        print_res(test)
         time.sleep(2)
 
     def test_p(self):
         print_header("Testing p...")
         # Starting the service
-        test = ThreadingP()
+        run = ThreadingP()
         time.sleep(2)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("Testing if service is deployed ... ")
-        self.assertTrue(sock.connect_ex(('0.0.0.0', 8083)) == 0)
+        test = bool(sock.connect_ex(('0.0.0.0', 8083)) == 0)
         sock.close()
+        self.assertTrue(test, msg=test)
+        print_res(test)
         print("Testing p.api_root() ...")
         resp = requests.get(url='http://0.0.0.0:8083/')
         data = json.loads(resp.text)
-        self.assertTrue(data["Service"] == "Microservice p")
+        test = bool(data["Service"] == "Microservice p")
+        self.assertTrue(test, msg=test)
+        print_res(test)
         print("Testing server shutdown...")
         resp = requests.post(url='http://0.0.0.0:8083/shutdown')
-        self.assertTrue(resp.text == "Server shutting down...")
+        test = bool(resp.text == "Server shutting down...")
+        self.assertTrue(test, msg=test)
+        print_res(test)
         time.sleep(2)
 
     def test_s(self):
         print_header("Testing s...")
         # Starting the service
-        test = ThreadingS()
+        run = ThreadingS()
         time.sleep(2)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("Testing if service is deployed ... ")
-        self.assertTrue(sock.connect_ex(('0.0.0.0', 8081)) == 0)
+        test = bool(sock.connect_ex(('0.0.0.0', 8081)) == 0)
         sock.close()
+        self.assertTrue(test, msg=test)
+        print_res(test)
         print("Testing s.api_root() ...")
         resp = requests.get(url='http://0.0.0.0:8081/')
         data = json.loads(resp.text)
-        self.assertTrue(data["Service"] == "Microservice s")
+        test = bool(data["Service"] == "Microservice s")
+        self.assertTrue(test, msg=test)
+        print_res(test)
         print("Testing server shutdown...")
         resp = requests.post(url='http://0.0.0.0:8081/shutdown')
-        self.assertTrue(resp.text == "Server shutting down...")
+        test = bool(resp.text == "Server shutting down...")
+        self.assertTrue(test, msg=test)
+        print_res(test)
         time.sleep(2)
 
     def test_w(self):
         print_header("Testing w...")
         # Starting the service
-        test = ThreadingW()
+        run = ThreadingW()
         time.sleep(2)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("Testing if service is deployed ... ")
-        self.assertTrue(sock.connect_ex(('0.0.0.0', 8090)) == 0)
+        test = bool(sock.connect_ex(('0.0.0.0', 8090)) == 0)
         sock.close()
+        self.assertTrue(test, msg=test)
+        print_res(test)
         print("Testing w.api_root() ...")
         resp = requests.get(url='http://0.0.0.0:8090/')
         data = json.loads(resp.text)
-        self.assertTrue(data["Service"] == "Microservice w")
+        test = bool(data["Service"] == "Microservice w")
+        self.assertTrue(test, msg=test)
+        print_res(test)
         print("Testing server shutdown...")
         resp = requests.post(url='http://0.0.0.0:8090/shutdown')
-        self.assertTrue(resp.text == "Server shutting down...")
+        test = bool(resp.text == "Server shutting down...")
+        self.assertTrue(test, msg=test)
+        print_res(test)
         time.sleep(2)
 
 
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestServices)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    unittest.main()
 
 
