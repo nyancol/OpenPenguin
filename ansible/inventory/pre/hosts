@@ -1,0 +1,12 @@
+[docker_cluster]
+#10.11.53.50
+10.11.53.21
+10.11.53.18
+
+[docker_cluster_primary]
+10.11.53.21
+
+[docker_cluster_replicas]
+#10.11.53.50
+10.11.53.21
+10.11.53.18

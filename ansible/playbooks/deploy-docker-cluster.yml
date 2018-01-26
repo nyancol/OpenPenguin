@@ -1,0 +1,43 @@
+---
+- hosts:
+    - docker_cluster_primary
+    - docker_cluster_replicas
+  sudo: yes
+
+  roles:
+    - emmetog.docker-compose
+  tasks:
+    - name: Set machine hostname
+      hostname: name={{ hostname }} 
+
+  #Set up cluster
+  # Configure first instance to bootstrap the cluster
+- hosts:
+    - docker_cluster_primary
+  sudo: yes
+  roles:
+    - {
+        role: "emmetog.consul",
+        consul_command: "-server -advertise {{ ansible_default_ipv4['address'] }} -boostrap-expect {{ groups['docker_cluster']|length }}",
+        consul_hostname: "swarm-1"
+      }
+
+  # Configure consul on other instances to join the cluster
+- hosts:
+    - docker_cluster_replicas
+  sudo: yes
+  roles:
+    - {
+        role: "emmetog.consul",
+        consul_command: "server -advertise {{ ansible_default_ipv4['address'] }} -join {{ hostvars[groups['docker_cluster_primary'][0]]['ansible_default_ipv4']['address'] }}",
+	consul_hostname: "swarm-1"
+      }
+
+  # Set up swarm on all instances
+- hosts:
+    - docker_cluster_primary
+    - docker_cluster_replicas
+  sudo: yes
+  roles:
+    - emmetog.swarm-master
+    - emmetog.swarm-agent

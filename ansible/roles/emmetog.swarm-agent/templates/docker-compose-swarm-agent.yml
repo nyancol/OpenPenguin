@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  swarm_agent:
+    image: swarm
+    restart: always
+    mem_limit: "32M"
+    command: "join --advertise {{ ansible_default_ipv4["address"] }}:2375 consul://{{ ansible_default_ipv4["address"] }}:8500"

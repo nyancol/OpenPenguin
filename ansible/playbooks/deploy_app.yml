@@ -1,0 +1,24 @@
+- hosts:
+    - docker_cluster
+  sudo: yes
+
+  roles:
+      - {
+        role: emmetog.docker-compose,
+        docker_compose_version: "1.7.1"
+        }
+
+# Pull images on all nodes
+- hosts:
+    - docker_cluster_primary
+  sudo: yes
+  tasks:
+  - name: Ensure docker-compose directory exists
+    file:
+      path: /home/ubuntu/cloud_native_app
+      state: directory
+
+  - name: Run docker-compose up
+    command: docker-compose -f /home/ubuntu/cloud_native_app/docker-compose.yml up -d
+    environment:
+      DOCKER_HOST: ":4000"
