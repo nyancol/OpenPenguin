@@ -13,11 +13,11 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 import redis
-import config
+import config_s as config
 
 # Initialise Flask
 app = Flask(__name__)
-app.debug = True
+app.debug = False
 
 # Affect app logger to a global variable so logger can be used elsewhere.
 config.logger = app.logger
@@ -100,7 +100,7 @@ def add_headers(response):
                          'Content-Type,Authorization')
 
 
-if __name__ == "__main__":
+def start_service():
     # Vars
     app_logfile = "s.log"
 
@@ -121,3 +121,7 @@ if __name__ == "__main__":
 
     config.logger.info("Starting %s", config.s.NAME)
     app.run(port=int(config.s.conf_file.get_s_port()), host='0.0.0.0')
+
+
+if __name__ == "__main__":
+    start_service()

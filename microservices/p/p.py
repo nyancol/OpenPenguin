@@ -14,12 +14,12 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 import swiftclient
-import config
+import config_p as config
 import redis
 
 # Initialise Flask
 app = Flask(__name__)
-app.debug = True
+app.debug = False
 
 # Affect app logger to a global variable so logger can be used elsewhere.
 config.logger = app.logger

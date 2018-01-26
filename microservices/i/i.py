@@ -13,7 +13,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 import _mysql
-import config
+import config_i as config
 
 # Initialise Flask
 app = Flask(__name__)

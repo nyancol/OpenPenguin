@@ -18,7 +18,7 @@ from flask import jsonify
 from flask import request
 import requests
 import pika
-import config
+import config_b as config
 
 # Initialise Flask
 app = Flask(__name__)

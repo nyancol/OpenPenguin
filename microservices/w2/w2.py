@@ -12,7 +12,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import pika
 import requests
-import config
+import config_w2 as config
 
 
 def initialize_logger(LOGFILE,

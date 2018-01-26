@@ -14,7 +14,7 @@ from logging.handlers import RotatingFileHandler
 import pika
 import redis
 import swiftclient
-import config
+import config_w1 as config
 
 
 def initialize_logger(LOGFILE,

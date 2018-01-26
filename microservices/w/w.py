@@ -16,11 +16,11 @@ import sys
 from flask import Flask
 from flask import jsonify
 from flask import request
-import config
+import config_w as config
 
 # Initialise Flask
 app = Flask(__name__)
-app.debug = True
+app.debug = False
 
 # Affect app logger to a global variable so logger can be used elsewhere.
 config.logger = app.logger
@@ -138,7 +138,7 @@ def add_headers(response):
                          'Content-Type,Authorization')
 
 
-if __name__ == "__main__":
+def start_service():
     # Vars
     app_logfile = "w.log"
 
@@ -159,3 +159,7 @@ if __name__ == "__main__":
 
     config.logger.info("Starting %s", config.w.NAME)
     app.run(port=int(config.w.conf_file.get_w_port()), host='0.0.0.0')
+
+
+if __name__ == "__main__":
+    start_service()
