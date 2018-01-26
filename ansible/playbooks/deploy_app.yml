@@ -8,17 +8,27 @@
         docker_compose_version: "1.7.1"
         }
 
-# Pull images on all nodes
+- hosts:
+    - docker_cluster
+  sudo: yes
+  tasks:
+  - name: Cleaning directories
+    file:
+      path: /home/ubuntu/OpenPenguin
+      state: absent
+  - name: Cloning project from github
+    command: "git clone https://github.com/nyancol/OpenPenguin"
+
 - hosts:
     - docker_cluster_primary
   sudo: yes
   tasks:
-  - name: Ensure docker-compose directory exists
+  - name: Ensure directory exists
     file:
-      path: /home/ubuntu/cloud_native_app
+      path: /home/ubuntu/OpenPenguin
       state: directory
 
   - name: Run docker-compose up
-    command: docker-compose -f /home/ubuntu/cloud_native_app/docker-compose.yml up -d
+    command: docker-compose -f /home/ubuntu/OpenPenguin/docker-compose.yml up -d
     environment:
       DOCKER_HOST: ":4000"
