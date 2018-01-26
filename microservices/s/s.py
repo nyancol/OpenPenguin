@@ -13,7 +13,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 import redis
-import config
+import config_s as config
 
 # Initialise Flask
 app = Flask(__name__)

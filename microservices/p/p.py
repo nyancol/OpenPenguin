@@ -14,7 +14,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 import swiftclient
-import config
+import config_p as config
 import redis
 
 # Initialise Flask
