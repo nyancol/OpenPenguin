@@ -1,0 +1,11 @@
+- src: emmetog.docker-compose
+  path: vendor-roles/
+
+- src: emmetog.consul
+  path: vendor-roles/
+
+- src: emmetog.swarm-master
+  path: vendor-roles/
+
+- src: emmetog.swarm-agent
+  path: vendor-roles/
