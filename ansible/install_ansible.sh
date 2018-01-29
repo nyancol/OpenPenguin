@@ -31,7 +31,7 @@ Host 10.9.8.*
 Host *  
  ControlMaster   auto
  ControlPath     ~/.ssh/mux-%r@%h:%p
- ControlPersist  15m' > ssh.cfg
+ ControlPersist  15m' > /etc/ansible/ssh.cfg
 
 git clone https://github.com/nyancol/OpenPenguin.git
 cd OpenPenguin/ansible
@@ -41,15 +41,15 @@ sudo cp -R playbooks /etc/ansible/
 sudo cp -R roles /etc/ansible/
 
 #=============CREATE CLUSTER=============
-sudo rm -rf inventory/pre/host_vars/*
-sudo rm inventory/pre/hosts
+sudo rm -rf /etc/ansible/inventory/pre/host_vars/*
+sudo rm /etc/ansible/inventory/pre/hosts
 sudo printf "[docker_cluster]
 %s
 
 [docker_cluster_primary]
 %s
 
-[docker_cluster_replicas]" "$ip" "$ip" > inventory/pre/hosts
+[docker_cluster_replicas]" "$ip" "$ip" > /etc/ansible/inventory/pre/hosts
 
 #faire appel à add_worker pour ajouter une machine
 #exemple : sudo ./add_worker <@IP>
