@@ -3,12 +3,12 @@
 ## Prérequis
 
 * Python sur toutes les machines (idéalement 2.7)
-* Machines sur le même sous-réseau 10.9.8.*
-* La clé ssh penguinkey.pm dans le repertoire /home/ubuntu/.ssh du bastion pour automatiser les connections
+* Machines sur le même sous-réseau *10.9.8.**
+* La clé ssh *penguinkey.pm* dans le repertoire */home/ubuntu/.ssh* du bastion pour automatiser les connections
 
 ## Installation
 
-Se connecter au bastion et lancer le script install_ansible :
+Se connecter au bastion et lancer le script *install_ansible* :
 ```sh
 sudo ./install_ansible.sh
 ```
@@ -17,7 +17,7 @@ Le bastion sera le maître du cluster ainsi créé.
 
 ### Ajouter une machine
 
-Se connecter au bastion et lancer le script add_worker :
+Se connecter au bastion et lancer le script *add_worker* :
 ```sh
 sudo ./add_worker <@IP du worker>
 ```
@@ -26,7 +26,7 @@ Ce script va ajouter la machine à la configuration du cluster docker.
 
 ### Déployer le cluster
 
-Se connecter au bastion et lancer le play "deploy_docker_cluster"
+Se connecter au bastion et lancer le play *deploy_docker_cluster*
 ```sh
 sudo ansible-playbooks -i inventory/pre/hosts playboks/deploy_docker_cluster.yml
 ```
@@ -35,12 +35,12 @@ Ce script va installer docker et initialiser le swarm cluster sur les différent
 ### Informations
 
 Quelques informations utiles :
-* la liste des machines du cluster est visible dans inventory/pre/hosts
-* la liste des plays ansible est visible dans playbooks/
+* la liste des machines du cluster est visible dans *inventory/pre/hosts*
+* la liste des plays ansible est visible dans *playbooks/*
 
 ## Déployer l'application
 
-Se connecter au bastion et exécuter le play "deploy_app", à condition que les étapes d'installation soit validées :
+Se connecter au bastion et exécuter le play *deploy_app*, à condition que les étapes d'installation soit validées :
 ```sh
 sudo ansible-playbooks -i inventory/pre/hosts playboks/deploy_app.yml
 ```
