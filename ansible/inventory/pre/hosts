@@ -1,12 +1,7 @@
 [docker_cluster]
-#10.11.53.50
-10.9.8.12
-10.10.10.11
+10.9.8.1
 
 [docker_cluster_primary]
-#10.11.53.50
-10.9.8.12
+10.9.8.1
 
 [docker_cluster_replicas]
-#10.9.8.12
-10.10.10.11
