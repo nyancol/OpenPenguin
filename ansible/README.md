@@ -4,7 +4,9 @@
 
 * Python sur toutes les machines (idéalement 2.7)
 * Machines sur le même sous-réseau *10.9.8.**
+* Un utilisateur *ubuntu* sur toutes les machines
 * La clé ssh *penguinkey.pm* dans le repertoire */home/ubuntu/.ssh* du bastion pour automatiser les connections
+* Les droits d'exécution sur Docker pour l'utilisateur *ubuntu* sur toutes les machines
 
 ## Installation
 
@@ -46,3 +48,10 @@ sudo ansible-playbooks -i inventory/pre/hosts playboks/deploy_app.yml
 ```
 Ce script va télécharger l'application et exécuter le docker-compose. 
 Si le swarm cluster docker fonctionne sans erreurs, les conteneurs seront automatiquement déployés sur les différentes machines et connectés entre eux. 
+
+** Références
+
+* [Configuration Ansible](http://blog.wescale.fr/2015/12/10/gerer-les-bastions-avec-ansible/).
+* [Cluster Docker avec Ansible partie 1](https://blog.nimbleci.com/2016/07/06/how-to-provision-a-swarm-cluster-on-bare-metal-using-ansible/)
+* [Cluster Docker avec Ansible partie 2](https://blog.nimbleci.com/2016/07/13/how-to-deploy-to-swarm-cluster-using-docker-compose-ansible/)
+* [Configuration Swarm](https://thisendout.com/2016/09/13/deploying-docker-swarm-with-ansible/)
