@@ -35,6 +35,7 @@ Host *
 
 git clone https://github.com/nyancol/OpenPenguin.git
 cd OpenPenguin/ansible
+sudo rm /etc/ansible/hosts
 yes | sudo cp -a conf/ /etc/ansible/
 sudo cp -R inventory /etc/ansible/
 sudo cp -R playbooks /etc/ansible/
@@ -50,6 +51,8 @@ sudo printf "[docker_cluster]
 %s
 
 [docker_cluster_replicas]" "$ip" "$ip" > /etc/ansible/inventory/pre/hosts
+
+sudo ./add_worker $ip
 
 #faire appel à add_worker pour ajouter une machine
 #exemple : sudo ./add_worker <@IP>
