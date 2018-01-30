@@ -5,6 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building sources..'
+                pip install --user virtualenv
             }
         }
         stage('Test') {
