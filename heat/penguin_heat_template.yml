@@ -33,18 +33,18 @@ resources:
     type: OS::Neutron::SecurityGroup
     properties:
       rules:
-        # - protocol: tcp
-        #   remote_ip_prefix: 10.10.10.0/24
+        - protocol: tcp
+          remote_ip_prefix: 10.10.10.0/24
         - protocol: icmp
           remote_ip_prefix: 0.0.0.0/0
         - protocol: tcp
           remote_ip_prefix: 0.0.0.0/0
-        #   port_range_min: 22
-        #   port_range_max: 22
-        # - protocol: tcp
-        #   remote_ip_prefix: 0.0.0.0/0
-        #   port_range_min: 80
-        #   port_range_max: 80
+          port_range_min: 22
+          port_range_max: 22
+        - protocol: tcp
+          remote_ip_prefix: 0.0.0.0/0
+          port_range_min: 80
+          port_range_max: 80
 
 
 #Ports
@@ -118,20 +118,6 @@ resources:
         echo "host_2" > /home/ubuntu/heat/host
         wget -P /home/ubuntu/heat/ 34.217.86.16/setup.sh
         sh /home/ubuntu/heat/setup.sh
-
-
-  # host3:
-  #   type: OS::Nova::Server
-  #   properties:
-  #     image: Ubuntu 16.04 "Xenial Xerus"
-  #     flavor: v2.m2.d5
-  #     networks:
-  #       - port: { get_resource: host3_port }
-  #     key_name: penguinkey
-  #     user_data: |
-  #       #!/bin/bash
-  #       sudo apt-get update
-  #       sudo apt-get install -y python
 
 #Floating IP association
   host1_association:
